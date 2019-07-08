@@ -14,12 +14,11 @@ abstract class BaseMessage(
     companion object AbstractFactoryMessage{
         var lastMessageId = -1
 
-        fun makeMessage(from: User, chat: Chat, date: Date, payload: Any?, type: String, isIncoming: Boolean = false) : BaseMessage {
+        fun makeMessage(from: User?, chat: Chat, date: Date, payload: Any?, type: String) : BaseMessage {
             lastMessageId++
             return when (type) {
-                "text" -> TextMessage("$lastMessageId", from, chat, date, isIncoming, payload as String)
-                "image" -> ImageMessage("$lastMessageId", from, chat, date, isIncoming, payload as String)
-                else -> throw IllegalStateException("Неизвестный тип сообщения")
+                "image" -> ImageMessage("$lastMessageId",  from, chat, date = date, image = payload as String)
+                else -> TextMessage("$lastMessageId", from, chat, date = date, text = payload as String)
             }
         }
     }
