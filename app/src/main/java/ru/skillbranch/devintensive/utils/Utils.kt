@@ -27,27 +27,16 @@ object Utils {
         return "${firstInitial ?: ""}${secondInitial ?: ""}"
     }
 
-    fun transliteration(payload: String, divider: String = " "): String {
-        var transliterationFirstName = ""
-        var transliterationLastName = ""
+    fun transliteration(payload: String, divider: String = " ") : String {
+        var result = ""
 
-        val firstName = parseFullName(payload).first
-        val lastName = parseFullName(payload).second
-
-        if (firstName != null) {
-            for (i in 0 until firstName.length) {
-                transliterationFirstName += translateChar(firstName[i])
+        payload.forEach {
+            result += when(it) {
+                ' ' -> divider
+                else -> translateChar(it)
             }
         }
-
-        if (lastName != null) {
-            for (i in 0 until lastName.length) {
-                transliterationLastName += translateChar(lastName[i])
-            }
-        }
-
-        return "$transliterationFirstName$divider$transliterationLastName"
-
+        return result
     }
 
     private fun translateChar(char: Char): String {
